@@ -1,0 +1,15 @@
+<?xml version="1.0" ?>
+<launch>
+  <!-- Run the ekf for map to odom config -->
+    <!--include file="$(find gps_navigation)/launch/ekf_localization2.launch" /-->
+     <include file="$(find gps_navigation)/launch/ekf_localization3.launch" />
+    <include file="$(find gps_navigation)/launch/start_map_server.launch"/>
+    <include file="$(find gps_navigation)/launch/start_navsat2.launch"/>
+      <include file="$(find ricardo_move)/launch/ricardo_move.launch" />
+       <node name="rviz" pkg="rviz" type="rviz" args="-d $(find main)/config/config_last.rviz">
+  </node>
+
+  <node pkg="tf" type="static_transform_publisher" name="base_link_to_gp" args="-0.3 0 0 0 0 0 /base_link /gps/fix 100">
+  </node>
+  
+</launch>

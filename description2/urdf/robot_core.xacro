@@ -1,0 +1,242 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" >
+
+
+<material name="white">
+    <color rgba="1 1 1 1"/>
+</material>
+
+<material name="orange">
+     <color rgba="1 0.3 0.1 1"/>
+</material>
+
+<material name="blue">
+    <color rgba="0.2 0.2 1 1"/>
+</material>
+
+
+<material name="black">
+    <color rgba="0 0 0 1"/>
+</material>
+
+<!--link name = "base_footprint">
+</link>
+<joint name="base_footprint_joint" type="fixed">
+    <parent link = "base_link"/>
+    <child link = "base_footprint"/>
+    <origin xyz ="0 0 -0.1"/>
+</joint-->
+
+
+<!--BASE LINK-->
+
+<link name="base_link">
+</link>
+
+<!--CHASSIS LINK-->
+<joint name="chassis_joint" type="fixed">
+    <parent link = "base_link"/>
+    <child link = "chassis"/>
+    <origin xyz ="0 0 0"/>
+</joint>
+  
+
+<link name = "chassis">
+<visual>
+    <origin xyz= "0 0 0.085"/>
+    <geometry>
+        <mesh filename= "package://description2/meshes/Chassis.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name ="white"/>
+</visual>
+<collision>
+    <origin xyz= "0 0 0.085"/>
+    <geometry>
+        <box size = "0.69804 0.325 0.17 "/>
+        
+    </geometry>
+    <material name ="white"/>
+
+    <inertial>
+        <mass value="19.928" />
+        <origin xyz="0 0 0" />
+				<inertia ixx="0.286" ixy="0.0" ixz="0.0"
+               iyy="1.109" iyz="0.0" 
+               izz="1.227" />
+      </inertial>
+      
+</collision>
+</link>
+
+<gazebo reference = "chassis">
+    <material>
+        Gazebo/White
+    </material>
+</gazebo>
+
+<!--LEFT WHEEL LINK FRONT-->
+<joint name = "left_wheel_front_joint" type="continuous">
+    <parent link ="base_link"/>
+    <child link = "left_wheel_front_link"/>
+    <origin xyz ="0.175 0.1875 0"/>
+    <axis xyz = "0 1 0"/>
+</joint>
+
+<link name = "left_wheel_front_link">
+<visual>
+   
+    <geometry>
+        <mesh filename = "package://description2/meshes/wheels.stl" scale = "0.001 0.001 0.001"/>
+    </geometry>
+    <material name ="black"/>
+</visual>
+
+
+<collision>
+    <origin xyz="0 0 0" rpy="-${pi/2} 0 0"/>
+    <geometry>
+        <cylinder radius = "0.1" length ="0.05"/>
+    </geometry>
+</collision>
+<inertial>
+    <mass value="1.420" />
+    <origin xyz="0 0 0" />
+            <inertia ixx="0.004" ixy="0.0" ixz="0.0"
+           iyy="0.008" iyz="0.0" 
+           izz="0.004" />
+  </inertial>
+</link>
+
+<gazebo reference = "left_wheel_front_link">
+    <material>
+        Gazebo/Black
+    </material>
+    <mu1 value=  "0.35"/>
+    <mu2 value= "0.35"/>
+</gazebo>
+
+<!--LEFT WHEEL LINK BACK-->
+<joint name = "left_wheel_back_joint" type="continuous">
+    <parent link ="base_link"/>
+    <child link = "left_wheel_back_link"/>
+    <origin xyz ="-0.175 0.1875 0"/>
+    <axis xyz = "0 1 0"/>
+</joint>
+
+<link name = "left_wheel_back_link">
+<visual>
+   
+    <geometry>
+        <mesh filename = "package://description2/meshes/wheels.stl" scale = "0.001 0.001 0.001"/>
+    </geometry>
+    <material name ="black"/>
+</visual>
+<collision>
+    <origin xyz="0 0 0" rpy="-${pi/2} 0 0"/>
+    <geometry>
+        <cylinder radius = "0.1" length ="0.05"/>
+    </geometry>
+</collision>
+<inertial>
+    <mass value="1.420" />
+    <origin xyz="0 0 0" />
+            <inertia ixx="0.004" ixy="0.0" ixz="0.0"
+           iyy="0.008" iyz="0.0" 
+           izz="0.004" />
+  </inertial>
+</link>
+<gazebo reference = "left_wheel_back_link">
+    <material>
+        Gazebo/Black
+    </material>
+
+    <mu1 value=  "0.35"/>
+    <mu2 value= "0.35"/>
+</gazebo>
+
+ 
+ 
+<!--RIGHT WHEEL LINK FRONT-->
+<joint name = "right_wheel_front_joint" type="continuous">
+    <parent link ="base_link"/>
+    <child link = "right_wheel_front_link"/>
+    <origin xyz ="0.175 -0.1875 0"/>
+    <axis xyz = "0 1 0"/>
+</joint>
+
+<link name = "right_wheel_front_link">
+<visual>
+   
+    <geometry>
+        <mesh filename = "package://description2/meshes/wheels.stl" scale = "0.001 0.001 0.001"/>
+    </geometry>
+    <material name ="black"/>
+</visual>
+<collision>
+    <origin xyz="0 0 0" rpy="${pi/2} 0 0"/>
+    <geometry>
+        <cylinder radius = "0.1" length ="0.05"/>
+    </geometry>
+</collision>
+<inertial>
+    <mass value="1.420" />
+    <origin xyz="0 0 0" />
+            <inertia ixx="0.004" ixy="0.0" ixz="0.0"
+           iyy="0.008" iyz="0.0" 
+           izz="0.004" />
+  </inertial>
+</link>
+<gazebo reference = "right_wheel_front_link">
+    <material>
+        Gazebo/Black
+    </material>
+    <mu1 value=  "0.35"/>
+    <mu2 value= "0.35"/>
+</gazebo>
+
+
+<!--RIGHT WHEEL LINK BACK-->
+<joint name = "right_wheel_back_joint" type="continuous">
+    <parent link ="base_link"/>
+    <child link = "right_wheel_back_link"/>
+    <origin xyz ="-0.175 -0.1875 0"/>
+    <axis xyz = "0 1 0"/>
+</joint>
+
+<link name = "right_wheel_back_link">
+<visual>
+   
+    <geometry>
+        <mesh filename = "package://description2/meshes/wheels.stl" scale = "0.001 0.001 0.001"/>
+    </geometry>
+    <material name ="black"/>
+</visual>
+<collision>
+    <origin xyz="0 0 0" rpy="${pi/2} 0 0"/>
+    <geometry>
+        <cylinder radius = "0.1" length ="0.05"/>
+    </geometry>
+</collision>
+<inertial>
+    <mass value="1.420" />
+    <origin xyz="0 0 0" />
+            <inertia ixx="0.004" ixy="0.0" ixz="0.0"
+           iyy="0.008" iyz="0.0" 
+           izz="0.004" />
+  </inertial>
+</link>
+<gazebo reference = "right_wheel_back_link">
+    <material>
+        Gazebo/Black
+    </material>
+    <mu1 value=  "0.35"/>
+    <mu2 value= "0.35"/>
+    
+</gazebo>
+
+
+
+
+
+ 
+</robot>

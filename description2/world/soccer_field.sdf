@@ -1,0 +1,78 @@
+<?xml version="1.0" ?>
+<sdf version="1.6">
+  <world name="soccer_field">
+    <include>
+      <uri>model://soccer_field</uri>
+    </include>
+    <physics name="default_physics" default="1">
+      <max_step_size>0.001</max_step_size>
+      <real_time_factor>1</real_time_factor>
+      <real_time_update_rate>1000</real_time_update_rate>
+      <ode>
+        <solver>
+          <type>quick</type>
+          <precon>none</precon>
+        </solver>
+        <constraints>
+          <cfm>0.0</cfm>
+          <erp>0.2</erp>
+          <contact_max_correcting_vel>100.0</contact_max_correcting_vel>
+          <contact_surface_layer>0.001</contact_surface_layer>
+        </constraints>
+      </ode>
+    </physics>
+  </world>
+  <model name="soccer_field">
+    <static>true</static>
+    <link name="ground_plane">
+      <collision name="collision">
+        <geometry>
+          <image>
+            <uri>file://path/to/your/image.png</uri>
+            <size>
+              <x>93</x>
+              <y>63</y>
+            </size>
+            <threshold>0.5</threshold>
+            <granularity>0.01</granularity>
+          </geometry>
+          <surface>
+            <friction>
+              <ode>
+                <mu>1</mu>
+                <mu2>1</mu2>
+                <fdir1>0 0 0</fdir1>
+              </ode>
+            </friction>
+            <contact>
+              <ode>
+                <max_vel>0.01</max_vel>
+                <min_depth>0.001</min_depth>
+                <kp>100000</kp>
+                <kd>1</kd>
+                <max_vel>100000</max_vel>
+                <min_depth>0.001</min_depth>
+              </ode>
+            </contact>
+          </surface>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>
+                <x>93</x>
+                <y>63</y>
+              </size>
+            </plane>
+          </geometry>
+          <material>
+            <script>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+              <name>Gazebo/FlatGreen</name>
+            </script>
+          </material>
+        </visual>
+      </link>
+    </model>
+  </sdf>

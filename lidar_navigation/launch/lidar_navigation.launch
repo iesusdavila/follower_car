@@ -1,0 +1,7 @@
+<launch>
+
+    <include file = "$(find lidar_navigation)/launch/start_map_server.launch"/>
+    <include file = "$(find lidar_navigation)/launch/acml.launch"/>
+    <include file = "$(find lidar_navigation)/launch/move_base.launch"/>
+
+</launch>

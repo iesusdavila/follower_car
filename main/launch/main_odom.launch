@@ -1,0 +1,19 @@
+<?xml version="1.0" ?>
+<launch>
+ <!--include file = "$(find adl200_core)/launch/adl200_core.launch"/-->
+
+
+  <node name="rviz" pkg="rviz" type="rviz" args="-d $(find main)/config/config3.rviz">
+  </node>
+
+  
+  <include file = "$(find adl200_teleop)/launch/teleop.launch"/>
+  <include file="$(find gps_navigation)/launch/start_map_server.launch" />
+  <include file="$(find gps_navigation)/launch/ekf_localization.launch" />
+  <include file="$(find gps_navigation)/launch/start_navsat.launch" />
+  <include file="$(find ricardo_move)/launch/ricardo_move.launch" />
+   <node pkg="tf" type="static_transform_publisher" name="world_to_map" args="293446 4138896 0 2.373647783 0 0 /world /map 100"/>
+  <!--include file="$(find velocity_sender)/launch/velocity_sender.launch"/-->
+  <!-- Run the ekf for map to odom config -->
+  <!-- Run the map server -->
+</launch>

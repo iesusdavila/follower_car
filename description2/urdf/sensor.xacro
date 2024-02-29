@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+
+<robot name="sensor" xmlns:xacro="http://www.ros.org/wiki/xacro">
+  <xacro:property name="distancex" value="0.135" />
+  <xacro:property name="distancey" value="0.11" />
+  <xacro:property name="distancez" value= "0.04"/>
+ <!-- sensor joint -->
+  <joint name="fixed" type="fixed">
+    <parent link="base_link"/>
+    <child link="sensor"/>
+    <origin xyz = "0.23 0 0.17"/>
+  </joint>
+
+ <!-- sensor Link -->
+  <link name="sensor">
+    <visual>
+      <origin xyz="0 0 ${distancez/2}" rpy="0 0 0"/>
+      <geometry>
+        <box size="${distancex} ${distancey} ${distancez}"/>
+      </geometry>
+      <material name="orange"/>
+    </visual>
+
+    <collision>
+      <origin xyz="0 0 ${distancez/2}" rpy="0 0 0"/>
+      <geometry>
+        <box size="${distancex} ${distancey} ${distancez}"/>
+      </geometry>
+    </collision>
+
+    <inertial>
+      <origin xyz="0 0 ${distancez/2}" rpy="0 0 0"/>
+      <mass value="1"/>
+      <inertia
+        ixx="1.0" ixy="0.0" ixz="0.0"
+        iyy="1.0" iyz="0.0"
+        izz="1.0"/>
+    </inertial>
+  </link>
+
+ <gazebo reference="sensor">
+    <material>Gazebo/Orange</material>
+  </gazebo>
+
+</robot>

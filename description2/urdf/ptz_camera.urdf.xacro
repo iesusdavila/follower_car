@@ -1,0 +1,59 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="robot">
+
+<material name="black">
+    <color rgba="0 0 0 1"/>
+</material>
+
+
+<link name="base_link">
+</link>
+
+<!--CHASSIS LINK-->
+<joint name="chassis_joint" type="fixed">
+    <parent link = "base_link"/>
+    <child link = "chassis"/>
+    <origin xyz ="0 0 0"/>
+</joint>
+  
+
+<link name = "chassis">
+<visual>
+    <origin xyz= "0 0 0.085"/>
+    <geometry>
+        <mesh filename= "package://description2/meshes/Chassis.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name ="white"/>
+</visual>
+<collision>
+    <origin xyz= "0 0 0.085"/>
+    <geometry>
+        <box size = "0.69804 0.325 0.17 "/>
+        
+    </geometry>
+    <material name ="white"/>
+    <inertial>
+        <mass value="19.928" />
+        <origin xyz="0 0 0" />
+				<inertia ixx="0.286" ixy="0.0" ixz="0.0"
+               iyy="1.109" iyz="0.0" 
+               izz="1.227" />
+      </inertial>
+</collision>
+</link>
+
+<gazebo reference = "chassis">
+    <material>
+        Gazebo/White
+    </material>
+</gazebo>
+
+
+<!--joint name = "cilinder" type="revolute">
+    <parent link = "base"/>
+    <child link = "upper"/>
+    <origin xyz ="0 0 0"/>
+</joint>
+-->
+
+</robot>
