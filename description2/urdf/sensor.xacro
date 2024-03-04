@@ -4,6 +4,7 @@
   <xacro:property name="distancex" value="0.135" />
   <xacro:property name="distancey" value="0.11" />
   <xacro:property name="distancez" value= "0.04"/>
+  
  <!-- sensor joint -->
   <joint name="fixed" type="fixed">
     <parent link="base_link"/>
@@ -38,7 +39,7 @@
     </inertial>
   </link>
 
- <gazebo reference="sensor">
+  <gazebo reference="sensor">
     <material>Gazebo/Orange</material>
   </gazebo>
 
