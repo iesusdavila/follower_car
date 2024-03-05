@@ -2,15 +2,15 @@
   <arg name="first_rover"  default="rover_0"/>
   <arg name="second_rover" default="rover_1"/>
 
-  <arg name="first_rover_x_pos" default=" 0.0"/>
-  <arg name="first_rover_y_pos" default=" 0.0"/>
+  <arg name="first_rover_x_pos" default="-3.0"/>
+  <arg name="first_rover_y_pos" default=" 1.0"/>
   <arg name="first_rover_z_pos" default=" 0.0"/>
-  <arg name="first_rover_yaw"   default=" 1.57"/>
+  <arg name="first_rover_yaw"   default=" 0.0"/>
 
-  <arg name="second_rover_x_pos" default=" 0.0"/>
-  <arg name="second_rover_y_pos" default="-1.0"/>
+  <arg name="second_rover_x_pos" default="-4.5"/>
+  <arg name="second_rover_y_pos" default=" 1.0"/>
   <arg name="second_rover_z_pos" default=" 0.0"/>
-  <arg name="second_rover_yaw"   default=" 1.57"/>
+  <arg name="second_rover_yaw"   default=" 0.0"/>
 
   <include file="$(find gazebo_ros)/launch/empty_world.launch">
     <!-- <arg name="world_name" value="$(find turtlebot3_gazebo)/worlds/turtlebot3_house.world"/> -->

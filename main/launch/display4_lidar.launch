@@ -23,7 +23,7 @@
 
   <!-- Run a python script to the send a service call to gazebo_ros to spawn a URDF robot -->
   <node name="urdf_spawner" pkg="gazebo_ros" type="spawn_model" respawn="false" output="screen"
-  args="-urdf -model robot_model -param robot_description -x -0.0 -y 0.0 -z 0.0"/> 
+    args="-urdf -model robot_model -param robot_description -x 0.0 -y 0.0 -z 0.0"/> 
 
   <!-- start robot state publisher -->
   <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher" output="screen" >
@@ -34,12 +34,5 @@
 
   <node name="rviz" pkg="rviz" type="rviz" args="-d $(find main)/config/main_config.rviz">
   </node>
-
- <!--
-  <include file="$(find gps_navigation)/launch/ekf_localization3.launch" />
-  <include file="$(find gps_navigation)/launch/start_map_server.launch"/>
-  <include file="$(find gps_navigation)/launch/start_navsat2.launch"/>
-  <include file="$(find ricardo_move)/launch/ricardo_move2.launch" />
-  -->
  
 </launch>
