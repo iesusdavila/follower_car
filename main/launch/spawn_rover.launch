@@ -1,17 +1,24 @@
 <?xml version="1.0" ?>
 <launch>
-  <!-- urdf xml robot description loaded on the Parameter Server-->  
-  <param name="robot_description" command="$(find xacro)/xacro '$(find description2)/urdf/adl200_description_lidar.urdf.xacro'" />   
 
-  <!-- Run a python script to the send a service call to gazebo_ros to spawn a URDF robot -->
-  <node name="urdf_spawner" pkg="gazebo_ros" type="spawn_model" respawn="false" output="screen"
-    args="-urdf -model robot_model -param robot_description -x -3.0 -y 1.0 -z 0.0"/> 
+    <arg name="name_rover" default="/" />
+    <arg name="rover_x_pos" default=" 0.0" />
+    <arg name="rover_y_pos" default=" 0.0" />
+    <arg name="rover_z_pos" default=" 0.0" />
+    <arg name="rover_yaw"   default=" 0.0" />
 
-  <!-- start robot state publisher -->
-  <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher" output="screen" >
-    <param name="publish_frequency" type="double" value="50.0" />
-  </node>
- 
-  <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" ></node> 
+    <param name="tf_prefix" value="$(arg name_rover)" />
+    <param name="robot_description" command="$(find xacro)/xacro '$(find description2)/urdf/adl200_description_lidar.urdf.xacro'" />   
+
+    <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher" output="screen" >
+        <param name="publish_frequency" type="double" value="50.0" />
+    </node>
+    
+    <node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model" 
+        args="-urdf -model $(arg name_rover) 
+            -x $(arg rover_x_pos) -y $(arg rover_y_pos) -z $(arg rover_z_pos) 
+            -Y $(arg rover_yaw) -param robot_description" />
+
+    <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" ></node> 
  
 </launch>

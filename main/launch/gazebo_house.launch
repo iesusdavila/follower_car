@@ -16,6 +16,10 @@
   </include>
 
   <include file="$(find main)/launch/spawn_rover.launch">
+    <arg name="rover_x_pos" value="-3.0" />
+    <arg name="rover_y_pos" value=" 1.0" />
+    <arg name="rover_z_pos" value=" 0.0" />
+    <arg name="rover_yaw"   value=" 0.0" />
   </include>
 
   <node name="rviz" pkg="rviz" type="rviz" args="-d $(find main)/config/main_config.rviz">
