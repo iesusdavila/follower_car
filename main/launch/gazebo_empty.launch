@@ -5,6 +5,7 @@
   <arg name="gui" default="true"/>
   <arg name="headless" default="false"/>
   <arg name="debug" default="false"/>
+  <arg name="rviz" default="false"/>
 
   <include file="$(find gazebo_ros)/launch/empty_world.launch">
     <arg name="debug" value="$(arg debug)" />
@@ -17,7 +18,7 @@
   <include file="$(find main)/launch/spawn_rover.launch">
   </include>
 
-  <node name="rviz" pkg="rviz" type="rviz" args="-d $(find main)/config/main_config.rviz">
+  <node if="$(arg rviz)" name="rviz" pkg="rviz" type="rviz" args="-d $(find main)/config/main_config.rviz">
   </node>
  
 </launch>
