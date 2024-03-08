@@ -1,5 +1,5 @@
 <launch>
-  <arg name="first_rover"  default="rover_0"/>
+  <arg name="first_rover"  default="/"/>
   <arg name="second_rover" default="rover_1"/>
 
   <arg name="first_rover_x_pos" default="-3.0"/>
