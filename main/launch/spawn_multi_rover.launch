@@ -53,4 +53,5 @@
         </include>
     </group>
 
+    <node if="$(arg navigation)" name="rviz" pkg="rviz" type="rviz" args="-d $(find main)/config/navigation_config.rviz" />
 </launch>
