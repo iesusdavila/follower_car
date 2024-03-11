@@ -54,4 +54,5 @@
     </group>
 
     <node if="$(arg navigation)" name="rviz" pkg="rviz" type="rviz" args="-d $(find main)/config/navigation_config.rviz" />
+    <node unless="$(arg navigation)" name="rviz" pkg="rviz" type="rviz" args="-d $(find main)/config/follower_config.rviz" />
 </launch>
