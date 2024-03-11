@@ -1,4 +1,6 @@
 <launch>
+  <arg name="navigation" default="false"/>
+
   <arg name="first_rover"  default="/"/>
   <arg name="second_rover" default="rover_1"/>
 
@@ -22,6 +24,8 @@
   </include>  
 
   <include file="$(find main)/launch/spawn_multi_rover.launch">
+    <arg name="navigation" value="$(arg navigation)"/>
+    
     <arg name="first_rover" value="$(arg first_rover)"/>
     <arg name="second_rover" value="$(arg second_rover)"/>
 
