@@ -61,7 +61,6 @@ class FollowRover:
             rospy.loginfo("maxl_ranges: {}".format(min(maxl_ranges)))
 
         if fwrd_ranges and (min(fwrd_ranges) > self.LIM_DISTANCE):
-            twist.angular.z = 0
             rospy.loginfo("fwrd_ranges: {}".format(min(fwrd_ranges)))
 
         if maxr_ranges and (min(maxr_ranges) > self.LIM_DISTANCE):
