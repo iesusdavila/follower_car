@@ -48,6 +48,11 @@ class FollowRover:
 
         twist = Twist()
 
+        if not any(self.filter_inf(ranges, 0, 180)):
+            rospy.loginfo("No objects detected. Stopping the robot.")
+            self.pub_cmd_vel.publish(twist)
+            return
+
         if ranges:
             error = min(ranges) - self.LIM_DISTANCE
             twist.linear.x = self.GAIN_Kp * error
