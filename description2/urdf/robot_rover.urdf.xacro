@@ -3,16 +3,15 @@
   <xacro:include filename="$(find description2)/urdf/materials.xacro"/>
   <xacro:include filename="$(find description2)/urdf/robot_rover.gazebo.xacro"/>
 
-  <link name="base_link">
-  </link>
+  <link name="base_footprint"/>
 
-  <joint name="chassis_joint" type="fixed">
-    <parent link = "base_link"/>
-    <child link = "chassis"/>
-    <origin xyz ="0 0 0"/>
+  <joint name="main_joint" type="fixed">
+    <parent link = "base_footprint"/>
+    <child link = "base_link"/>
+    <origin xyz ="0 0 0.10" rpy="0 0 0"/>
   </joint>
     
-  <link name = "chassis">
+  <link name = "base_link">
     <visual>
       <origin xyz= "0 0 0.085"/>
       <geometry>
