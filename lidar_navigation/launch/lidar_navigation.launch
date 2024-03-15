@@ -1,13 +1,9 @@
 <launch>
-    <arg name="scan_topic" default="scan"/>
     <arg name="initial_pose_x" default="0.0"/>
     <arg name="initial_pose_y" default="0.0"/>
     <arg name="initial_pose_a" default="0.0"/>
-    <arg name="odom_frame_id" default="odom"/>
-    <arg name="base_frame_id" default="base_link"/>
 
-    <arg name="cmd_vel_topic" default="cmd_vel" />
-    <arg name="odom_topic" default="odom" />
+    <arg name="robot_namespace" default="rover_0"/>
 
     <arg name="map_file" default="$(find lidar_navigation)/maps/mymap_empty.yaml"/>
 
@@ -16,16 +12,13 @@
     </include>
 
     <include file = "$(find lidar_navigation)/launch/acml.launch">
-        <arg name="scan_topic" value="$(arg scan_topic)"/>
         <arg name="initial_pose_x" value="$(arg initial_pose_x)"/>
         <arg name="initial_pose_y" value="$(arg initial_pose_y)"/>
         <arg name="initial_pose_a" value="$(arg initial_pose_a)"/>
-        <arg name="odom_frame_id" value="$(arg odom_frame_id)"/>
-        <arg name="base_frame_id" value="$(arg base_frame_id)"/>
+        <arg name="robot_namespace" value="$(arg robot_namespace)"/>
     </include>
 
     <include file = "$(find lidar_navigation)/launch/move_base.launch">
-        <arg name="cmd_vel_topic" value="$(arg cmd_vel_topic)"/>
-        <arg name="odom_topic" value="$(arg odom_topic)"/>
+        <arg name="robot_namespace" value="$(arg robot_namespace)"/>
     </include>
 </launch>

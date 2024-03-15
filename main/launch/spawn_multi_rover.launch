@@ -1,7 +1,7 @@
 <launch>
     <arg name="navigation" default="false"/>
 
-    <arg name="first_rover"  default="/"/>
+    <arg name="first_rover"  default="rover_0"/>
     <arg name="second_rover" default="rover_1"/>
 
     <arg name="first_rover_x_pos" default="-3.0"/>
@@ -27,10 +27,9 @@
         <param if="$(arg navigation)" name="amcl/initial_pose_x" value="$(arg first_rover_x_pos)" />
         <param if="$(arg navigation)" name="amcl/initial_pose_y" value="$(arg first_rover_y_pos)" />
         <include if="$(arg navigation)" file="$(find lidar_navigation)/launch/lidar_navigation.launch">
-            <!-- <arg name="odom_frame_id" value="$(arg first_rover)/odom"/>
-            <arg name="base_frame_id" value="$(arg first_rover)/base_link"/> -->
             <arg name="initial_pose_x" value="$(arg first_rover_x_pos)" />
             <arg name="initial_pose_y" value="$(arg first_rover_y_pos)" />
+            <arg name="robot_namespace" value="$(arg first_rover)"/>
         </include>
     </group>
 
@@ -48,8 +47,7 @@
         <include if="$(arg navigation)" file="$(find lidar_navigation)/launch/lidar_navigation.launch">
             <arg name="initial_pose_x" value="$(arg second_rover_x_pos)" />
             <arg name="initial_pose_y" value="$(arg second_rover_y_pos)" />
-            <arg name="odom_frame_id" value="$(arg second_rover)/odom"/>
-            <arg name="base_frame_id" value="$(arg second_rover)/base_link"/>
+            <arg name="robot_namespace" value="$(arg second_rover)"/>
         </include>
     </group>
 
