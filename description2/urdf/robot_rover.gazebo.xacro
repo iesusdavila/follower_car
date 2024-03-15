@@ -1,0 +1,107 @@
+<?xml version="1.0"?>
+<robot name="robot_rover_gazebo" xmlns:xacro="http://ros.org/wiki/xacro">
+    <gazebo reference = "chassis">
+        <material>Gazebo/White</material>
+    </gazebo>
+
+    <gazebo reference="left_wheel_front_link">
+        <material>Gazebo/Black</material>
+        <mu1 value="0.35"/>
+        <mu2 value="0.35"/>
+    </gazebo>
+
+    <gazebo reference="left_wheel_back_link">
+        <material>Gazebo/Black</material>
+        <mu1 value="0.35"/>
+        <mu2 value="0.35"/>
+    </gazebo>
+
+    <gazebo reference="right_wheel_front_link">
+        <material>Gazebo/Black</material>
+        <mu1 value="0.35"/>
+        <mu2 value="0.35"/>
+    </gazebo>
+
+    <gazebo reference="right_wheel_back_link">
+        <material>Gazebo/Black</material>
+        <mu1 value="0.35"/>
+        <mu2 value="0.35"/>
+    </gazebo>
+
+    <gazebo reference="sensor">
+        <material>Gazebo/Orange</material>
+    </gazebo>
+
+    <gazebo>
+        <plugin name = "imu_plugin" filename="libhector_gazebo_ros_imu.so">
+            <updateRate>2.0</updateRate>
+            <boyName>sensor</boyName>
+            <topicName>/handsfree/imu</topicName>     
+            <frameId>sensor</frameId>
+            <accelGaussianNoise>0 0 0</accelGaussianNoise>
+            <rateGaussianNoise>0 0 0</rateGaussianNoise>
+            <yawGaussianNoise>0.0</yawGaussianNoise>
+        </plugin>
+    </gazebo>
+
+    <gazebo reference="sensor">
+        <sensor type="gpu_ray" name="head_hokuyo_sensor">
+            <pose>0 0 0 0 0 0</pose>
+            <visualize>true</visualize>
+            <update_rate>40</update_rate>
+            <ray>
+                <scan>
+                <horizontal>
+                    <samples>180</samples>
+                    <resolution>1</resolution>
+                    <min_angle>-1.570796</min_angle>
+                    <max_angle>1.570796</max_angle>
+                </horizontal>
+                </scan>
+                <range>
+                <min>0.2</min>
+                <max>5.0</max>
+                <resolution>0.01</resolution>
+                </range>
+                <noise>
+                <type>gaussian</type>
+                <mean>0.0</mean>
+                <stddev>0.01</stddev>
+                </noise>
+            </ray>
+            <plugin name="gazebo_ros_head_hokuyo_controller" filename="libgazebo_ros_gpu_laser.so">
+                <topicName>scan</topicName>
+                <frameName>sensor</frameName>
+            </plugin>
+        </sensor>
+    </gazebo>
+
+    <gazebo>
+        <plugin name="skid_steer_drive_controller" filename="libgazebo_ros_skid_steer_drive.so">
+            <updateRate>100.0</updateRate>
+            <leftFrontJoint>left_wheel_front_joint</leftFrontJoint>
+            <rightFrontJoint>right_wheel_front_joint</rightFrontJoint>
+            <leftRearJoint>left_wheel_back_joint</leftRearJoint>
+            <rightRearJoint>right_wheel_back_joint</rightRearJoint>
+            <wheelSeparation>0.3750</wheelSeparation>
+            <wheelDiameter>0.2</wheelDiameter>
+            <torque>20</torque>
+            <MaxForce>5.0</MaxForce>
+            <commandTopic>cmd_vel</commandTopic>
+            <broadcastTF>true</broadcastTF>
+            <odometryTopic>odom</odometryTopic>
+            <odometryFrame>odom</odometryFrame>
+            <robotBaseFrame>base_link</robotBaseFrame>
+
+            <publishWheelTF>false</publishWheelTF>
+            <publishTf>true</publishTf>
+            <publishWheelJointState>true</publishWheelJointState>
+            <publishOdomTF>true</publishOdomTF>
+
+
+            <covariance_x>0.0001</covariance_x>
+            <covariance_y>0.0001</covariance_y>
+            <covariance_yaw>0.0001</covariance_yaw>
+        </plugin>
+    </gazebo>
+</robot>

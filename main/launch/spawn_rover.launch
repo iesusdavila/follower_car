@@ -8,7 +8,7 @@
     <arg name="rover_yaw"   default=" 0.0" />
 
     <param name="tf_prefix" value="$(arg name_rover)" />
-    <param name="robot_description" command="$(find xacro)/xacro '$(find description2)/urdf/adl200_description_lidar.urdf.xacro'" />   
+    <param name="robot_description" command="$(find xacro)/xacro '$(find description2)/urdf/robot_rover.urdf.xacro'" />   
 
     <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher" output="screen" >
         <param name="publish_frequency" type="double" value="50.0" />
