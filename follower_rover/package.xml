@@ -5,8 +5,8 @@
   <description>The follower_rover package</description>
 
   <maintainer email="iesusdavila@gmail.com">Iesus Davila</maintainer>
+  <maintainer email="ricardoortizpozo@gmail.com">Ricardo Ortiz</maintainer>
   <license>TODO</license>
-  <author email="iesusdavila@gmail.com">Iesus Davila</author> 
 
   <buildtool_depend>catkin</buildtool_depend>
   <build_depend>geometry_msgs</build_depend>
