@@ -23,10 +23,11 @@
   </include>  
 
   <include file="$(find main)/launch/spawn_multi_rover.launch">
-    <arg name="navigation" value="$(arg navigation)"/>
+    <arg name="navigation"        value="$(arg navigation)"/>
+    <arg name="map_file"          value="$(find lidar_navigation)/maps/map.yaml"/>
     
-    <arg name="first_rover" value="$(arg first_rover)"/>
-    <arg name="second_rover" value="$(arg second_rover)"/>
+    <arg name="first_rover"       value="$(arg first_rover)"/>
+    <arg name="second_rover"      value="$(arg second_rover)"/>
 
     <arg name="first_rover_x_pos" value="$(arg first_rover_x_pos)"/>
     <arg name="first_rover_y_pos" value="$(arg first_rover_y_pos)"/>
