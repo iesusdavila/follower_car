@@ -1,7 +1,7 @@
 <?xml version="1.0" ?>
 <launch>
 
-    <arg name="name_rover" default="/" />
+    <arg name="name_rover" default="rover" />
     <arg name="rover_x_pos" default=" 0.0" />
     <arg name="rover_y_pos" default=" 0.0" />
     <arg name="rover_z_pos" default=" 0.0" />
