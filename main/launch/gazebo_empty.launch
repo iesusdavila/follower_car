@@ -5,7 +5,8 @@
   <arg name="gui" default="true"/>
   <arg name="headless" default="false"/>
   <arg name="debug" default="false"/>
-  <arg name="rviz" default="false"/>
+
+  <arg name="navigation" default="false"/>
 
   <include file="$(find gazebo_ros)/launch/empty_world.launch">
     <arg name="debug" value="$(arg debug)" />
@@ -15,10 +16,27 @@
     <arg name="headless" value="$(arg headless)"/>
   </include>
 
-  <include file="$(find main)/launch/spawn_rover.launch">
-  </include>
+  <group ns = "rover">
+    <include file="$(find main)/launch/spawn_rover.launch">
+      <arg name="name_rover" value="rover" />
+      <arg name="rover_x_pos" value="0.0" />
+      <arg name="rover_y_pos" value="0.0" />
+      <arg name="rover_z_pos" value="0.0" />
+      <arg name="rover_yaw"   value="0.0" />
+    </include>
 
-  <node if="$(arg rviz)" name="rviz" pkg="rviz" type="rviz" args="-d $(find main)/config/main_config.rviz">
-  </node>
+
+    <param if="$(arg navigation)" name="amcl/initial_pose_x" value="0.0" />
+    <param if="$(arg navigation)" name="amcl/initial_pose_y" value="0.0" />
+    <include if="$(arg navigation)" file="$(find lidar_navigation)/launch/lidar_navigation.launch">
+      <arg name="initial_pose_x" value="0.0" />
+      <arg name="initial_pose_y" value="0.0" />
+      <arg name="robot_namespace" value="rover"/>
+      <arg name="map_file" value="$(find lidar_navigation)/maps/mymap_empty.yaml"/>
+    </include>
+  </group>
+
+  <node if="$(arg navigation)" name="rviz" pkg="rviz" type="rviz" args="-d $(find main)/config/one_navigation_config.rviz" />
+  <node unless="$(arg navigation)" name="rviz" pkg="rviz" type="rviz" args="-d $(find main)/config/main_config.rviz" />
  
 </launch>
