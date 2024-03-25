@@ -2,22 +2,25 @@ cmake_minimum_required(VERSION 3.0.2)
 project(main)
 
 find_package(catkin REQUIRED COMPONENTS
-  roscpp
-  rospy
+  gazebo_ros
 )
 
+find_package(gazebo REQUIRED)
+
 catkin_package(
-#  INCLUDE_DIRS include
-#  LIBRARIES main
-#  CATKIN_DEPENDS roscpp rospy
-#  DEPENDS system_lib
+  DEPENDS GAZEBO
 )
 
 ###########
 ## Build ##
 ###########
+link_directories(${GAZEBO_LIBRARY_DIRS})
 
 include_directories(
-# include
   ${catkin_INCLUDE_DIRS}
+  ${GAZEBO_INCLUDE_DIRS}
+)
+
+install(DIRECTORY config launch models worlds
+  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
 )
