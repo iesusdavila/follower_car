@@ -1,6 +1,6 @@
 <?xml version='1.0'?>
 <sdf version='1.6'>
-  <model name='turtlebot3_house'>
+  <model name='house'>
     <link name='Wall_101'>
       <pose frame=''>-0.05 3.1 0 0 0 -1.5708</pose>
       <self_collide>0</self_collide>
