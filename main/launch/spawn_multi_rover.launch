@@ -33,6 +33,8 @@
             <arg name="robot_namespace" value="$(arg first_rover)"/>
             <arg name="map_file" value="$(arg map_file)"/>
         </include>
+
+        <node unless="$(arg navigation)" pkg="tf" type="static_transform_publisher" name="static_transform_publisher" args="0 0 0 0 0 0 world $(arg first_rover)/odom 1" />
     </group>
 
     <group ns = "$(arg second_rover)">
@@ -52,6 +54,8 @@
             <arg name="robot_namespace" value="$(arg second_rover)"/>
             <arg name="map_file" value="$(arg map_file)"/>
         </include>
+
+        <node unless="$(arg navigation)" pkg="tf" type="static_transform_publisher" name="static_transform_publisher" args="0 0 0 0 0 0 world $(arg second_rover)/odom 1" />
     </group>
 
     <node if="$(arg navigation)" name="rviz" pkg="rviz" type="rviz" args="-d $(find main)/config/navigation_config.rviz" />
