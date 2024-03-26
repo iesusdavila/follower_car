@@ -6,6 +6,8 @@ Panels:
       Expanded:
         - /Global Options1
         - /Status1
+        - /RobotModel1
+        - /TF1
         - /TF1/Frames1
         - /TF1/Tree1
       Splitter Ratio: 0.5
@@ -64,11 +66,11 @@ Visualization Manager:
         Expand Link Details: false
         Expand Tree: false
         Link Tree Style: Links in Alphabetic Order
-        base_link:
+        base_footprint:
           Alpha: 1
           Show Axes: false
           Show Trail: false
-        chassis:
+        base_link:
           Alpha: 1
           Show Axes: false
           Show Trail: false
@@ -99,8 +101,8 @@ Visualization Manager:
           Show Trail: false
           Value: true
       Name: RobotModel
-      Robot Description: robot_description
-      TF Prefix: ""
+      Robot Description: /rover/robot_description
+      TF Prefix: rover
       Update Interval: 0
       Value: true
       Visual Enabled: true
@@ -134,42 +136,41 @@ Visualization Manager:
       Frame Timeout: 15
       Frames:
         All Enabled: false
-        base_link:
+        rover/base_footprint:
           Value: true
-        chassis:
-          Value: false
-        left_wheel_back_link:
-          Value: false
-        left_wheel_front_link:
-          Value: false
-        odom:
+        rover/base_link:
           Value: true
-        right_wheel_back_link:
-          Value: false
-        right_wheel_front_link:
-          Value: false
-        sensor:
-          Value: false
+        rover/left_wheel_back_link:
+          Value: true
+        rover/left_wheel_front_link:
+          Value: true
+        rover/odom:
+          Value: true
+        rover/right_wheel_back_link:
+          Value: true
+        rover/right_wheel_front_link:
+          Value: true
+        rover/sensor:
+          Value: true
       Marker Scale: 1
       Name: TF
       Show Arrows: true
       Show Axes: true
-      Show Names: true
+      Show Names: false
       Tree:
-        odom:
-          base_link:
-            chassis:
-              {}
-            left_wheel_back_link:
-              {}
-            left_wheel_front_link:
-              {}
-            right_wheel_back_link:
-              {}
-            right_wheel_front_link:
-              {}
-            sensor:
-              {}
+        rover/odom:
+          rover/base_footprint:
+            rover/base_link:
+              rover/left_wheel_back_link:
+                {}
+              rover/left_wheel_front_link:
+                {}
+              rover/right_wheel_back_link:
+                {}
+              rover/right_wheel_front_link:
+                {}
+              rover/sensor:
+                {}
       Update Interval: 0
       Value: true
     - Angle Tolerance: 0.10000000149011612
@@ -210,7 +211,7 @@ Visualization Manager:
   Global Options:
     Background Color: 48; 48; 48
     Default Light: true
-    Fixed Frame: base_link
+    Fixed Frame: rover/base_footprint
     Frame Rate: 30
   Name: root
   Tools:
@@ -249,10 +250,10 @@ Visualization Manager:
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.590398371219635
+      Pitch: 0.7003982067108154
       Target Frame: <Fixed Frame>
       Value: Orbit (rviz)
-      Yaw: 3.9854326248168945
+      Yaw: 3.9704296588897705
     Saved: ~
 Window Geometry:
   Displays:
