@@ -1,0 +1,16 @@
+<launch>
+  <!-- Arguments -->
+  <arg name="configuration_basename" default="rover_lds_2d.lua"/>
+  <arg name="open_rviz" default="true"/>
+  <arg name="name_rover" default="rover" />
+
+  <include file="$(find rover_slam)/launch/map_gmapping.launch">
+    <arg name="configuration_basename" value="$(arg configuration_basename)"/>
+    <arg name="name_rover" value="$(arg name_rover)"/>
+  </include>
+
+  <group if="$(arg open_rviz)"> 
+    <node pkg="rviz" type="rviz" name="rviz" required="true"
+          args="-d $(find rover_slam)/rviz/gmapping.rviz"/>
+  </group>
+</launch>
