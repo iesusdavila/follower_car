@@ -30,6 +30,7 @@
         <include if="$(arg navigation)" file="$(find lidar_navigation)/launch/lidar_navigation.launch">
             <arg name="initial_pose_x" value="$(arg first_rover_x_pos)" />
             <arg name="initial_pose_y" value="$(arg first_rover_y_pos)" />
+            <arg name="initial_pose_a" value="$(arg first_rover_yaw)" />
             <arg name="robot_namespace" value="$(arg first_rover)"/>
             <arg name="map_file" value="$(arg map_file)"/>
         </include>
@@ -51,6 +52,7 @@
         <include if="$(arg navigation)" file="$(find lidar_navigation)/launch/lidar_navigation.launch">
             <arg name="initial_pose_x" value="$(arg second_rover_x_pos)" />
             <arg name="initial_pose_y" value="$(arg second_rover_y_pos)" />
+            <arg name="initial_pose_a" value="$(arg second_rover_yaw)"/>
             <arg name="robot_namespace" value="$(arg second_rover)"/>
             <arg name="map_file" value="$(arg map_file)"/>
         </include>
