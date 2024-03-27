@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <robot name="robot_rover_gazebo" xmlns:xacro="http://ros.org/wiki/xacro">
-    <gazebo reference = "chassis">
+    <gazebo reference = "base_link">
         <material>Gazebo/White</material>
     </gazebo>
 
