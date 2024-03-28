@@ -25,7 +25,7 @@ class FollowRover:
         self.LIM_DISTANCE = 0.75
         self.LIM_ANGULAR_VELOCITY = 1.0
         self.LIM_LINEAR_VELOCITY = 1.0
-        self.GAIN_Kp = 2.0
+        self.GAIN_Kp = 2.0    
 
     def limit_velocity(self, vel, lim_vel):
         if vel > lim_vel:
@@ -37,14 +37,45 @@ class FollowRover:
     def filter_inf(self, ranges, start, end):
         return [val for val in ranges[start:end] if not math.isinf(val)]    
 
-    def scan_callback(self, data):
-        ranges = data.ranges
-
+    def move_angular(self, ranges):
         minl_ranges = self.filter_inf(ranges, 0, 30)
         maxl_ranges = self.filter_inf(ranges, 30, 60)
         fwrd_ranges = self.filter_inf(ranges, 60, 120)
         maxr_ranges = self.filter_inf(ranges, 120, 150)
         minr_ranges = self.filter_inf(ranges, 150, 180)
+
+        angular_vel = 0.0
+
+        if minl_ranges and (min(minl_ranges) > self.LIM_DISTANCE):
+            angular_vel = -self.LIM_ANGULAR_VELOCITY*2
+            rospy.loginfo("minl_ranges: {}".format(min(minl_ranges)))
+
+        if maxl_ranges and (min(maxl_ranges) > self.LIM_DISTANCE):
+            angular_vel = -self.LIM_ANGULAR_VELOCITY
+            rospy.loginfo("maxl_ranges: {}".format(min(maxl_ranges)))
+
+        if fwrd_ranges and (min(fwrd_ranges) > self.LIM_DISTANCE):
+            rospy.loginfo("fwrd_ranges: {}".format(min(fwrd_ranges)))
+
+        if maxr_ranges and (min(maxr_ranges) > self.LIM_DISTANCE):
+            angular_vel = self.LIM_ANGULAR_VELOCITY
+            rospy.loginfo("maxr_ranges: {}".format(min(maxr_ranges)))
+
+        if minr_ranges and (min(minr_ranges) > self.LIM_DISTANCE):
+            angular_vel = self.LIM_ANGULAR_VELOCITY*2
+            rospy.loginfo("minr_ranges: {}".format(min(minr_ranges)))
+        
+        return angular_vel
+
+    def move_linear(self, ranges):
+        if ranges:
+            error = min(ranges) - self.LIM_DISTANCE
+            linear_vel = self.GAIN_Kp * error
+            
+            return self.limit_velocity(linear_vel, self.LIM_LINEAR_VELOCITY)
+    
+    def scan_callback(self, data):
+        ranges = data.ranges
 
         twist = Twist()
 
@@ -52,29 +83,9 @@ class FollowRover:
             rospy.loginfo("No objects detected. Stopping the robot.")
             self.pub_cmd_vel.publish(twist)
             return
-
-        if ranges:
-            error = min(ranges) - self.LIM_DISTANCE
-            twist.linear.x = self.GAIN_Kp * error
-            
-        if minl_ranges and (min(minl_ranges) > self.LIM_DISTANCE):
-            twist.angular.z = -self.LIM_ANGULAR_VELOCITY*2
-            rospy.loginfo("minl_ranges: {}".format(min(minl_ranges)))
-
-        if maxl_ranges and (min(maxl_ranges) > self.LIM_DISTANCE):
-            twist.angular.z = -self.LIM_ANGULAR_VELOCITY
-            rospy.loginfo("maxl_ranges: {}".format(min(maxl_ranges)))
-
-        if fwrd_ranges and (min(fwrd_ranges) > self.LIM_DISTANCE):
-            rospy.loginfo("fwrd_ranges: {}".format(min(fwrd_ranges)))
-
-        if maxr_ranges and (min(maxr_ranges) > self.LIM_DISTANCE):
-            twist.angular.z = self.LIM_ANGULAR_VELOCITY
-            rospy.loginfo("maxr_ranges: {}".format(min(maxr_ranges)))
-
-        if minr_ranges and (min(minr_ranges) > self.LIM_DISTANCE):
-            twist.angular.z = self.LIM_ANGULAR_VELOCITY*2
-            rospy.loginfo("minr_ranges: {}".format(min(minr_ranges)))
+        
+        twist.linear.x = self.move_linear(ranges)
+        twist.angular.z = self.move_angular(ranges)
 
         self.pub_cmd_vel.publish(twist)
 
