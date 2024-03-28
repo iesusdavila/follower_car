@@ -21,4 +21,8 @@
     <include file = "$(find lidar_navigation)/launch/move_base.launch">
         <arg name="robot_namespace" value="$(arg robot_namespace)"/>
     </include>
+    
+    <include file = "$(find lidar_navigation)/launch/ekf_localization.launch">
+        <arg name="robot_namespace" value="$(arg robot_namespace)"/>
+    </include>
 </launch>
