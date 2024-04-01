@@ -9,7 +9,7 @@
   <arg name="first_rover_yaw"   default=" 1.5708"/>
 
   <arg name="second_rover_x_pos" default="-6.5"/>
-  <arg name="second_rover_y_pos" default="-2.5"/>
+  <arg name="second_rover_y_pos" default="-2.0"/>
   <arg name="second_rover_z_pos" default=" 0.0"/>
   <arg name="second_rover_yaw"   default=" 1.5708"/>
 
