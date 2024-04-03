@@ -44,9 +44,12 @@ class FollowRover:
 
     def move_angular(self, ranges):
         angular_vel = 0.0
-        if ((self.sup_limit_front - self.inf_limit_front)<25) and ((self.inf_limit_front) > (180 - self.sup_limit_front)):
+        range_limit_front = self.sup_limit_front - self.inf_limit_front
+        range_limit_left = self.inf_limit_front
+        range_limit_right = 180 - self.sup_limit_front
+        if (range_limit_front<25) and (range_limit_left > range_limit_right):
             angular_vel = self.LIM_ANGULAR_VELOCITY
-        elif ((self.sup_limit_front - self.inf_limit_front)<25) and ((self.inf_limit_front) < (180 - self.sup_limit_front)):
+        elif (range_limit_front<25) and (range_limit_left < range_limit_right):
             angular_vel = -self.LIM_ANGULAR_VELOCITY
 
         return angular_vel
