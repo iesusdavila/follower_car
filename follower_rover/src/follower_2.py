@@ -43,12 +43,6 @@ class FollowRover:
         return [val for val in ranges[start:end] if not math.isinf(val)]    
 
     def move_angular(self, ranges):
-        minl_ranges = self.filter_inf(ranges, 0, self.sup_limit_minl)
-        maxl_ranges = self.filter_inf(ranges, self.sup_limit_minl, self.inf_limit_front)
-        fwrd_ranges = self.filter_inf(ranges, self.inf_limit_front, self.sup_limit_front)
-        maxr_ranges = self.filter_inf(ranges, self.sup_limit_front, self.sup_limit_maxr)
-        minr_ranges = self.filter_inf(ranges, self.sup_limit_maxr, 180)
-
         angular_vel = 0.0
         if ((self.sup_limit_front - self.inf_limit_front)<25) and ((self.inf_limit_front) > (180 - self.sup_limit_front)):
             angular_vel = self.LIM_ANGULAR_VELOCITY
