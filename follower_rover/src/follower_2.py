@@ -42,11 +42,13 @@ class FollowRover:
     def filter_inf(self, ranges, start, end):
         return [val for val in ranges[start:end] if not math.isinf(val)]    
 
-    def move_angular(self, ranges):
-        angular_vel = 0.0
+    def move_angular(self):
         range_limit_front = self.sup_limit_front - self.inf_limit_front
         range_limit_left = self.inf_limit_front
         range_limit_right = 180 - self.sup_limit_front
+        
+        angular_vel = 0.0
+
         if (range_limit_front<25) and (range_limit_left > range_limit_right):
             angular_vel = self.LIM_ANGULAR_VELOCITY
         elif (range_limit_front<25) and (range_limit_left < range_limit_right):
@@ -113,7 +115,7 @@ class FollowRover:
         if is_detect_rover:
             print("Velocity x: ", self.move_linear(ranges))
             twist.linear.x = self.move_linear(ranges)
-            twist.angular.z = self.move_angular(ranges)
+            twist.angular.z = self.move_angular()
             self.pub_cmd_vel.publish(twist)
 
 if __name__ == '__main__':
