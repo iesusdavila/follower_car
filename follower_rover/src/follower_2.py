@@ -43,6 +43,7 @@ class FollowRover:
         return [val for val in ranges[start:end] if not math.isinf(val)]    
 
     def move_angular(self):
+        # Positivo en sentido de las manecillas del reloj
         range_limit_front = self.sup_limit_front - self.inf_limit_front
         range_limit_left = self.inf_limit_front
         range_limit_right = 180 - self.sup_limit_front
@@ -63,7 +64,7 @@ class FollowRover:
 
         if fwrd_ranges:
             error = min(fwrd_ranges) - self.LIM_DISTANCE
-            linear_vel = self.GAIN_Kp * error
+            linear_vel = self.GAIN_Kp * error # Control P (Interesante)
             
             vel_linear_x = self.limit_velocity(linear_vel, self.LIM_LINEAR_VELOCITY)
 
@@ -73,7 +74,7 @@ class FollowRover:
         init_angle = None
         fin_angle = None
 
-        i = 67
+        i = 67 # Haciendo pruebas el angulo de deteccion del rover es entre 67 y 113 grados
         for scan in ranges[67:113]:
             if not math.isinf(scan):
                 if scan < self.LIM_DISTANCE*2:
