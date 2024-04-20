@@ -12,13 +12,13 @@
 
 [**Operations for simulation execution**](#_page1_x82.00_y504.92)
 
-[**Operation for 1 follower ROVER and 1 main ROVER (teleoperation control)**](#_page1_x82.00_y546.92)
+- [**Operation for 1 follower ROVER and 1 main ROVER (teleoperation control)**](#_page1_x82.00_y546.92)
 
-[**Operation for 1 follower ROVER and 1 main ROVER (autonomous navigation)**](#_page3_x82.00_y550.92)
+- [**Operation for 1 follower ROVER and 1 main ROVER (autonomous navigation)**](#_page3_x82.00_y550.92)
 
-[**Operation for 2 follower ROVERs and 1 main ROVER (teleoperation control)**](#_page5_x82.00_y324.92)
+- [**Operation for 2 follower ROVERs and 1 main ROVER (teleoperation control)**](#_page5_x82.00_y324.92)
 
-[**Operation for 2 ROVER followers and 1 main ROVER (autonomous navigation)**](#_page7_x82.00_y261.92)
+- [**Operation for 2 ROVER followers and 1 main ROVER (autonomous navigation)**](#_page7_x82.00_y261.92)
 
 [**Operation for real life execution**](#_page8_x82.00_y604.92)
 
