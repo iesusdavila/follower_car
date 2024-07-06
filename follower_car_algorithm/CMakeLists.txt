@@ -7,12 +7,27 @@ endif()
 
 # find dependencies
 find_package(ament_cmake REQUIRED)
+find_package(rclpy REQUIRED)
+find_package(sensor_msgs REQUIRED)
+find_package(geometry_msgs REQUIRED)
 
-if(BUILD_TESTING)
-  find_package(ament_lint_auto REQUIRED)
-  set(ament_cmake_copyright_FOUND TRUE)
-  set(ament_cmake_cpplint_FOUND TRUE)
-  ament_lint_auto_find_test_dependencies()
-endif()
 
+set(DEPENDENCIES
+  "rclpy"
+  "sensor_msgs"
+  "geometry_msgs"
+)
+
+install(TARGETS ${EXEC_NAME}
+  DESTINATION lib/${PROJECT_NAME}
+)
+
+install(PROGRAMS
+  scripts/follower_car.py
+  DESTINATION lib/${PROJECT_NAME}
+)
+
+ament_export_dependencies(rclpy)
+ament_export_dependencies(sensor_msgs)
+ament_export_dependencies(geometry_msgs)
 ament_package()
