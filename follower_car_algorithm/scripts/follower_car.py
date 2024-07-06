@@ -23,10 +23,10 @@ class FollowRover(Node):
         self.sub_scan = self.create_subscription(LaserScan, scan_topic, self.scan_callback, 10)
         self.pub_cmd_vel = self.create_publisher(Twist, cmd_vel_topic, 10)
 
-        self.LIM_DISTANCE = 0.4
-        self.LIM_ANGULAR_VELOCITY = 2.0
-        self.LIM_LINEAR_VELOCITY = 3.0
-        self.GAIN_Kp = 5.0
+        self.LIM_DISTANCE = 0.2
+        self.LIM_ANGULAR_VELOCITY = 1.0
+        self.LIM_LINEAR_VELOCITY = 0.22
+        self.GAIN_Kp = 1.0
 
         self.scanned_init_angle = 60
         self.scanned_fin_angle = 120
@@ -82,17 +82,57 @@ class FollowRover(Node):
 
         return vel_linear_x
 
+    def select_range_lim_front(self):
+        is_foq_ia, is_foq_fa, is_fiq_ia, is_fiq_fa = self.get_quadrants()
+
+        range_limit_front = 0.0
+        if is_fiq_ia and is_fiq_fa:
+            range_limit_front = self.scanned_fin_angle - self.scanned_init_angle
+        elif is_foq_ia and is_foq_fa:
+            range_limit_front = self.scanned_fin_angle - self.scanned_init_angle
+        elif is_foq_ia and is_fiq_fa:
+            range_limit_front = (360 - self.scanned_init_angle) + self.scanned_fin_angle
+        else:
+            range_limit_front = self.scanned_fin_angle - self.scanned_init_angle
+
+        return range_limit_front
+
+    def select_range_lim_left(self):
+        is_foq_ia, is_foq_fa, is_fiq_ia, is_fiq_fa = self.get_quadrants()
+
+        range_limit_left = 0.0
+        if is_fiq_ia:
+            range_limit_left = 180 - self.scanned_fin_angle
+        elif is_foq_ia:
+            range_limit_left = 90 + (360 - self.scanned_fin_angle)
+        else:
+            range_limit_left = 0
+
+        return range_limit_left
+
+    def select_range_lim_right(self):
+        is_foq_ia, is_foq_fa, is_fiq_ia, is_fiq_fa = self.get_quadrants()
+
+        range_limit_right = 0.0
+        if is_fiq_fa:
+            range_limit_right = 90 + self.scanned_init_angle
+        elif is_foq_fa:
+            range_limit_right = self.scanned_init_angle - 270
+        else:
+            range_limit_right = 0
+
+        return range_limit_right
+
     def move_angular(self):
-        # Positivo en sentido de las manecillas del reloj
-        range_limit_front = self.scanned_fin_angle - self.scanned_init_angle
-        range_limit_left = self.scanned_init_angle
-        range_limit_right = 180 - self.scanned_fin_angle
+        range_limit_front = self.select_range_lim_front()
+        range_limit_left = self.select_range_lim_left()
+        range_limit_right = self.select_range_lim_right()
         
         angular_vel = 0.0
 
-        if (range_limit_front<25) and (range_limit_left > range_limit_right):
+        if (range_limit_front<5) and (range_limit_left > range_limit_right):
             angular_vel = self.LIM_ANGULAR_VELOCITY
-        elif (range_limit_front<25) and (range_limit_left < range_limit_right):
+        elif (range_limit_front<5) and (range_limit_left < range_limit_right):
             angular_vel = -self.LIM_ANGULAR_VELOCITY
 
         return angular_vel
@@ -148,8 +188,8 @@ class FollowRover(Node):
             self.info("Car detected.")
             twist.linear.x = self.move_linear(ranges)
             self.info(f'Velocity x: {twist.linear.x}')
-            # twist.angular.z = self.move_angular()
-            # print("Velocity z: ", twist.angular.z)
+            twist.angular.z = self.move_angular()
+            self.info(f'Velocity z: {twist.angular.z}')
             self.pub_cmd_vel.publish(twist)
     
     def info(self, msg):
