@@ -14,7 +14,7 @@ class FollowRover(Node):
         
         argv = sys.argv
         if len(argv) < 2:
-            self.get_logger().error("It is required to specify the name of the ROVER as an argument to the executable. For example: rover_1")
+            self.get_logger(name_robot).error("It is required to specify the name of the ROVER as an argument to the executable. For example: rover_1")
             sys.exit(1)
         self.name_robot = argv[1]
         self.scan_topic = self.name_robot + "/scan"
@@ -40,8 +40,11 @@ class FollowRover(Node):
             vel = -lim_vel
         return float(vel)
     
-    def filter_inf(self, ranges, start, end):
-        return [val for val in ranges[start:end] if not math.isinf(val)]    
+    def filter_inf(self, ranges, start=None, end=None):
+        if start is None and end is None:
+            return [val for val in ranges if not math.isinf(val)]
+        else:
+            return [val for val in ranges[start:end] if not math.isinf(val)]    
 
     def move_angular(self):
         # Positivo en sentido de las manecillas del reloj
@@ -58,14 +61,35 @@ class FollowRover(Node):
 
         return angular_vel
 
+    def scan_front(self, init_angle, fin_angle, ranges):
+        # Fourth Quadrant
+        is_foq_ia = init_angle < 360 and init_angle > 270 # Init angle
+        is_foq_fa = fin_angle < 360 and fin_angle > 270 # Final angle
+        # First Quadrant
+        is_fiq_ia = init_angle > 0 and init_angle < 90 # Init angle
+        is_fiq_fa = fin_angle > 0 and fin_angle < 90 # Final angle
+
+        scan_fwrd_ranges = []
+
+        if is_fiq_ia and is_fiq_fa:
+            scan_fwrd_ranges = ranges[init_angle:fin_angle]
+        elif is_foq_ia and is_foq_fa:
+            scan_fwrd_ranges = ranges[init_angle:fin_angle]
+        elif is_foq_ia and is_fiq_fa:
+            scan_fwrd_ranges = ranges[:fin_angle] + ranges[init_angle:]
+        else:
+            scan_fwrd_ranges = ranges[init_angle:fin_angle]
+        
+        return self.filter_inf(scan_fwrd_ranges)
+
     def move_linear(self, ranges):
-        fwrd_ranges = self.filter_inf(ranges, self.inf_limit_front, self.sup_limit_front)
+        fwrd_ranges = self.scan_front(self.inf_limit_front, self.sup_limit_front, ranges)
 
         vel_linear_x = 0.0
 
         if fwrd_ranges:
             error = min(fwrd_ranges) - self.LIM_DISTANCE
-            linear_vel = self.GAIN_Kp * error # Control P (Interesante)
+            linear_vel = self.GAIN_Kp * error # Control Proporcional
             
             vel_linear_x = self.limit_velocity(linear_vel, self.LIM_LINEAR_VELOCITY)
 
@@ -75,30 +99,39 @@ class FollowRover(Node):
         init_angle = None
         fin_angle = None
 
-        i = 67 # Haciendo pruebas el angulo de deteccion del rover es entre 67 y 113 grados
-        for scan in ranges[67:113]:
+        # TurtleBot Burger Haciendo pruebas el angulo de deteccion del rover es entre 337 y 23 grados
+        i = 337
+
+        scan_ranges = ranges[337:] + ranges[:23]
+        if any(self.filter_inf(scan_ranges)):
+            self.info("Car in the position of 337° to 23°.")
+
+        for scan in scan_ranges:
             if not math.isinf(scan):
                 if scan < self.LIM_DISTANCE*2:
                     if init_angle is not None:
                         fin_angle = i
                     if init_angle is None:
                         init_angle = i
-            i += 1
+            if i == 359:
+                i = 0
+            else:
+                i += 1
 
         val_detect_front = True
 
         if init_angle is not None and fin_angle is not None:
-            print("Rover detected between {} and {} degrees".format(init_angle, fin_angle))
+            self.info("Rover detected between ia: {}° and fa: {}°".format(init_angle, fin_angle))
             self.inf_limit_front = init_angle
             self.sup_limit_front = fin_angle
 
-            mitad_izq = int(init_angle/2)
-            mitad_der = fin_angle + int((180-fin_angle)/2)
+            # mitad_izq = int(init_angle/2)
+            # mitad_der = fin_angle + int((180-fin_angle)/2)
 
-            self.sup_limit_minl = mitad_izq
-            self.sup_limit_maxr = mitad_der
+            # self.sup_limit_minl = mitad_izq
+            # self.sup_limit_maxr = mitad_der
         else:
-            print("No rover detected.")
+            self.info("No rover detected.")
             val_detect_front = False
 
         return val_detect_front         
@@ -108,17 +141,24 @@ class FollowRover(Node):
 
         twist = Twist()
 
-        if not any(self.filter_inf(ranges, 0, 180)):
-            print("No objects detected. Stopping the robot.")
+        scan_front = ranges[:90] + ranges[270:]
+        if not (any(self.filter_inf(scan_front))):
+            self.info("No car detected. Stopping the car.")
             self.pub_cmd_vel.publish(twist)
             return
-        
+
         is_detect_rover = self.detect_rover(ranges)
         if is_detect_rover:
-            print("Velocity x: ", self.move_linear(ranges))
+            self.info("Car detected.")
             twist.linear.x = self.move_linear(ranges)
-            twist.angular.z = self.move_angular()
+            self.info(f'Velocity x: {twist.linear.x}')
+            # twist.angular.z = self.move_angular()
+            # print("Velocity z: ", twist.angular.z)
             self.pub_cmd_vel.publish(twist)
+    
+    def info(self, msg):
+        self.get_logger().info(msg)
+        return
 
 def main(args=None):
     rclpy.init(args=args)
