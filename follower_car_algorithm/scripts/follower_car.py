@@ -23,8 +23,8 @@ class FollowRover(Node):
         self.sub_scan = self.create_subscription(LaserScan, scan_topic, self.scan_callback, 10)
         self.pub_cmd_vel = self.create_publisher(Twist, cmd_vel_topic, 10)
 
-        self.LIM_DISTANCE = 0.2
-        self.LIM_ANGULAR_VELOCITY = 1.0
+        self.LIM_DISTANCE = 0.3
+        self.LIM_ANGULAR_VELOCITY = 0.4
         self.LIM_LINEAR_VELOCITY = 0.22
         self.GAIN_Kp = 1.0
 
@@ -130,10 +130,10 @@ class FollowRover(Node):
         
         angular_vel = 0.0
 
-        if (range_limit_front<5) and (range_limit_left > range_limit_right):
-            angular_vel = self.LIM_ANGULAR_VELOCITY
-        elif (range_limit_front<5) and (range_limit_left < range_limit_right):
+        if (range_limit_front<20) and (range_limit_left > range_limit_right):
             angular_vel = -self.LIM_ANGULAR_VELOCITY
+        elif (range_limit_front<20) and (range_limit_left < range_limit_right):
+            angular_vel = self.LIM_ANGULAR_VELOCITY
 
         return angular_vel
 
@@ -141,12 +141,12 @@ class FollowRover(Node):
         init_angle = None
         fin_angle = None
 
-        # TurtleBot Burger Haciendo pruebas el angulo de deteccion del rover es entre 337 y 23 grados
-        i = 337
+        # El carro se lo busca desde los 345° hasta los 15°
+        i = 345
 
-        scan_ranges = ranges[337:] + ranges[:23]
+        scan_ranges = ranges[345:] + ranges[:15]
         if any(self.filter_inf(scan_ranges)):
-            self.info("Car in the position of 337° to 23°.")
+            self.info("Car in the position of 345° to 15°.")
 
         for scan in scan_ranges:
             if not math.isinf(scan):
