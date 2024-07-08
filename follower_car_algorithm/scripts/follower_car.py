@@ -102,7 +102,7 @@ class FollowRover(Node):
 
         range_limit_left = 0.0
         if is_fiq_ia:
-            range_limit_left = 180 - self.scanned_fin_angle
+            range_limit_left = 90 - self.scanned_fin_angle
         elif is_foq_ia:
             range_limit_left = 90 + (360 - self.scanned_fin_angle)
         else:
