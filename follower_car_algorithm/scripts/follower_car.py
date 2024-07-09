@@ -24,7 +24,7 @@ class FollowRover(Node):
         self.pub_cmd_vel = self.create_publisher(Twist, cmd_vel_topic, 10)
 
         self.LIM_DISTANCE = 0.3
-        self.LIM_ANGULAR_VELOCITY = 0.4
+        self.LIM_ANGULAR_VELOCITY = 0.2
         self.LIM_LINEAR_VELOCITY = 0.22
         self.GAIN_Kp = 1.0
 
