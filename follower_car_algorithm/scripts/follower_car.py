@@ -12,7 +12,7 @@ class FollowRover(Node):
     def __init__(self):        
         argv = sys.argv
         if len(argv) < 2:
-            self.get_logger(name_robot).error("It is required to specify the name of the TurtleBot3 as an argument to the executable. For example: car_follower")
+            print("It is required to specify the name of the TurtleBot3 as an argument to the executable. For example: car_follower")
             sys.exit(1)
         self.name_robot = argv[1]
         scan_topic = self.name_robot + "/scan"
