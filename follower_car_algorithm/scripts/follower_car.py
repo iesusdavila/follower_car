@@ -9,9 +9,7 @@ from geometry_msgs.msg import Twist
 import math
 
 class FollowRover(Node):
-    def __init__(self):
-        super().__init__('follow_car_node')
-        
+    def __init__(self):        
         argv = sys.argv
         if len(argv) < 2:
             self.get_logger(name_robot).error("It is required to specify the name of the TurtleBot3 as an argument to the executable. For example: car_follower")
@@ -19,6 +17,8 @@ class FollowRover(Node):
         self.name_robot = argv[1]
         scan_topic = self.name_robot + "/scan"
         cmd_vel_topic = self.name_robot + "/cmd_vel"
+
+        super().__init__(f'follow_{self.name_robot}_node')
 
         self.sub_scan = self.create_subscription(LaserScan, scan_topic, self.scan_callback, 10)
         self.pub_cmd_vel = self.create_publisher(Twist, cmd_vel_topic, 10)
