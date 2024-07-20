@@ -183,7 +183,7 @@ class FollowTB3Robotics(Node):
             return
 
         is_detect_tb3 = self.detect_tb3(ranges)
-        if is_detect_rover:
+        if is_detect_tb3:
             twist.linear.x = self.move_linear(ranges)
             twist.angular.z = self.move_angular()
             self.info(f'VelX: {twist.linear.x} VelZ: {twist.angular.z}')
