@@ -23,8 +23,8 @@ install(TARGETS ${EXEC_NAME}
 )
 
 install(PROGRAMS
-  scripts/follower_car_without_ns.py
   scripts/follower_car.py
+  scripts/follower_tb3.py
   DESTINATION lib/${PROJECT_NAME}
 )
 
