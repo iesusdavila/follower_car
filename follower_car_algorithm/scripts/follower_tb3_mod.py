@@ -124,7 +124,7 @@ class FollowTB3Burger(Node):
 
         return angular_vel
 
-    def detect_rover(self, ranges):
+    def detect_tb3(self, ranges):
         init_angle = None
         fin_angle = None
 
@@ -171,8 +171,8 @@ class FollowTB3Burger(Node):
             self.pub_cmd_vel.publish(twist)
             return
 
-        is_detect_rover = self.detect_rover(ranges)
-        if is_detect_rover:
+        is_detect_tb3 = self.detect_tb3(ranges)
+        if is_detect_tb3:
             twist.linear.x = self.move_linear(ranges)
             twist.angular.z = self.move_angular()
             self.info(f'VelX: {twist.linear.x} VelZ: {twist.angular.z}')
