@@ -8,7 +8,7 @@ from sensor_msgs.msg import LaserScan
 from geometry_msgs.msg import Twist
 import math
 
-class FollowRover(Node):
+class FollowTB3Robotics(Node):
     def __init__(self):        
         argv = sys.argv
         if len(argv) < 2:
@@ -137,16 +137,13 @@ class FollowRover(Node):
 
         return angular_vel
 
-    def detect_rover(self, ranges):
+    def detect_tb3(self, ranges):
         init_angle = None
         fin_angle = None
 
-        # El carro se lo busca desde los 345° hasta los 15°
+        # Find the car from 345 to 15 degrees
         i = 345
-
         scan_ranges = ranges[345:] + ranges[:15]
-        if any(self.filter_inf(scan_ranges)):
-            self.info("Car in the position of 345° to 15°.")
 
         for scan in scan_ranges:
             if not math.isinf(scan):
@@ -167,7 +164,7 @@ class FollowRover(Node):
             self.scanned_init_angle = init_angle
             self.scanned_fin_angle = fin_angle
         else:
-            self.info("No rover detected.")
+            self.info("No car detected between ia: {}° and fa: {}°".format(345, 15))
             val_detect_front = False
 
         return val_detect_front         
@@ -180,16 +177,16 @@ class FollowRover(Node):
         scan_front = ranges[:90] + ranges[270:]
         if not (any(self.filter_inf(scan_front))):
             self.info("No car detected. Stopping the car.")
+            twist.linear.x = 0.0
+            twist.angular.z = 0.0
             self.pub_cmd_vel.publish(twist)
             return
 
-        is_detect_rover = self.detect_rover(ranges)
+        is_detect_tb3 = self.detect_tb3(ranges)
         if is_detect_rover:
-            self.info("Car detected.")
             twist.linear.x = self.move_linear(ranges)
-            self.info(f'Velocity x: {twist.linear.x}')
             twist.angular.z = self.move_angular()
-            self.info(f'Velocity z: {twist.angular.z}')
+            self.info(f'VelX: {twist.linear.x} VelZ: {twist.angular.z}')
             self.pub_cmd_vel.publish(twist)
     
     def info(self, msg):
@@ -198,9 +195,9 @@ class FollowRover(Node):
 
 def main(args=None):
     rclpy.init(args=args)
-    follow_rover = FollowRover()
-    rclpy.spin(follow_rover)
-    follow_rover.destroy_node()
+    follow_tb3_robotics = FollowTB3Robotics()
+    rclpy.spin(follow_tb3_robotics)
+    follow_tb3_robotics.destroy_node()
     rclpy.shutdown()
 
 if __name__ == '__main__':
