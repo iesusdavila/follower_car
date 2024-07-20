@@ -8,18 +8,19 @@ from sensor_msgs.msg import LaserScan
 from geometry_msgs.msg import Twist
 import math
 
-class FollowRover(Node):
+class FollowTB3Burger(Node):
     def __init__(self): 
         argv = sys.argv
         if len(argv) >= 2:
             self.name_robot = argv[1]
         else:
             self.name_robot = ""
-        print(f'Robot name: {self.name_robot}')
-        scan_topic = self.name_robot + "/scan"
-        cmd_vel_topic = self.name_robot + "/cmd_vel"
 
         super().__init__(f'follow_{self.name_robot}_node')
+        self.info("Node started")
+
+        scan_topic = self.name_robot + "/scan"
+        cmd_vel_topic = self.name_robot + "/cmd_vel"
 
         self.sub_scan = self.create_subscription(LaserScan, scan_topic, self.scan_callback, 10)
         self.pub_cmd_vel = self.create_publisher(Twist, cmd_vel_topic, 10)
@@ -127,7 +128,7 @@ class FollowRover(Node):
         init_angle = None
         fin_angle = None
 
-        # El carro se lo busca desde los 237 hasta los 267 grados
+        # Find the car from 237 to 267 degrees
         i = 237
         scan_ranges = ranges[237:267]
 
@@ -183,9 +184,9 @@ class FollowRover(Node):
 
 def main(args=None):
     rclpy.init(args=args)
-    follow_rover = FollowRover()
-    rclpy.spin(follow_rover)
-    follow_rover.destroy_node()
+    follow_tb3_burger = FollowTB3Burger()
+    rclpy.spin(follow_tb3_burger)
+    follow_tb3_burger.destroy_node()
     rclpy.shutdown()
 
 if __name__ == '__main__':
