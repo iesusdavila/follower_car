@@ -59,21 +59,12 @@ class FollowRover(Node):
     def scan_car_ranges(self, ranges):
         is_sq_ia, is_sq_fa, is_tq_ia, is_tq_fa = self.get_quadrants()
 
-        scan_fwrd_ranges = []
-        if is_sq_ia and is_sq_fa:
-            scan_fwrd_ranges = ranges[self.scanned_init_angle:self.scanned_fin_angle]
-        elif is_tq_ia and is_tq_fa:
-            scan_fwrd_ranges = ranges[self.scanned_init_angle:self.scanned_fin_angle]
-        elif is_tq_ia and is_sq_fa:
-            scan_fwrd_ranges = ranges[self.scanned_init_angle:self.scanned_fin_angle]
-        else:
-            scan_fwrd_ranges = ranges[self.scanned_init_angle:self.scanned_fin_angle]
+        scan_fwrd_ranges = ranges[self.scanned_init_angle:self.scanned_fin_angle]
         
         return self.filter_inf(scan_fwrd_ranges)
 
     def move_linear(self, ranges):
-        scan_fwrd_ranges = self.scan_car_ranges(ranges)
-        fwrd_ranges = self.filter_inf(scan_fwrd_ranges)
+        fwrd_ranges = self.scan_car_ranges(ranges)
 
         vel_linear_x = 0.0
 
@@ -88,15 +79,7 @@ class FollowRover(Node):
     def select_range_lim_front(self):
         is_sq_ia, is_sq_fa, is_tq_ia, is_tq_fa = self.get_quadrants()
 
-        range_limit_front = 0.0
-        if is_sq_ia and is_sq_fa:
-            range_limit_front = self.scanned_fin_angle - self.scanned_init_angle
-        elif is_tq_ia and is_tq_fa:
-            range_limit_front = self.scanned_fin_angle - self.scanned_init_angle
-        elif is_tq_ia and is_sq_fa:
-            range_limit_front = self.scanned_fin_angle - self.scanned_init_angle
-        else:
-            range_limit_front = self.scanned_fin_angle - self.scanned_init_angle
+        range_limit_front = self.scanned_fin_angle - self.scanned_init_angle
 
         return range_limit_front
 
