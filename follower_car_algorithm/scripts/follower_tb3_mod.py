@@ -53,7 +53,7 @@ class FollowTB3Burger(Node):
 
         # Third Quadrant
         is_tq_ia = self.scanned_init_angle > 252 and self.scanned_init_angle <= 378 # Init angle
-        is_tq_fa = self.scanned_init_angle > 252 and self.scanned_init_angle <= 378 # Init angle
+        is_tq_fa = self.scanned_fin_angle > 252 and self.scanned_fin_angle <= 378 # Final angle
 
         return is_sq_ia, is_sq_fa, is_tq_ia, is_tq_fa
 
