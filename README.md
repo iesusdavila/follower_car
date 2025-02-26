@@ -1,3 +1,3 @@
 <h1 align="center">
-  Follower ROVER
+  Robot Follower
 </h1>
